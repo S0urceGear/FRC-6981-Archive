@@ -7,8 +7,10 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.Timer;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.spark.*;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.config.SparkMaxConfig;
+//import com.revrobotics.CANSparkLowLevel.MotorType;
 
 
 public class Robot extends TimedRobot {
@@ -24,33 +26,35 @@ public class Robot extends TimedRobot {
   private Timer timer = new Timer();
   private Timer delay = new Timer();
 
-  CANSparkMax m_launchWheel;
-  CANSparkMax m_feedWheel;
+  SparkMax m_launchWheel;
+  SparkMax m_feedWheel;
+  SparkMax m_GrabberL;
+  SparkMax m_GrabberR;
+ // SparkMax AmpArm;
 
-  CANSparkMax m_GrabberL;
-  CANSparkMax m_GrabberR;
-
-  CANSparkMax AmpArm;
+  SparkMaxConfig c_launchWheel;
+  SparkMaxConfig c_feedWheel; 
+  //SparkMaxConfig c_GrabberL;
+  //SparkMaxConfig c_GrabberR;
+  //SparkMaxConfig c_AmpArm;
 
 
   @Override
   public void robotInit() {
     m_rightMotor1.setInverted(true);
     m_rightMotor2.setInverted(true);
-
     ControlHandlerD = new GenericHID(0);
 
-    m_launchWheel = new CANSparkMax(5, MotorType.kBrushed);
-    m_feedWheel = new CANSparkMax(6, MotorType.kBrushed);
+    c_launchWheel.smartCurrentLimit(80);
+    c_feedWheel.smartCurrentLimit(80);
 
-    m_GrabberL = new CANSparkMax(7, MotorType.kBrushless);
-    m_GrabberR = new CANSparkMax(8, MotorType.kBrushless);
+    m_launchWheel = new SparkMax(5, MotorType.kBrushed);
+    m_feedWheel = new SparkMax(6, MotorType.kBrushed);
 
-    AmpArm = new CANSparkMax(9, MotorType.kBrushed);
-
-    m_launchWheel.setSmartCurrentLimit(80);
-    m_feedWheel.setSmartCurrentLimit(80);
-
+    m_GrabberL = new SparkMax(7, MotorType.kBrushless);
+    m_GrabberR = new SparkMax(8, MotorType.kBrushless);
+    
+   // AmpArm = new SparkMax(9, MotorType.kBrushed);
   }
 
   @Override
@@ -72,9 +76,9 @@ public class Robot extends TimedRobot {
 
 
     //Amp Arm Commands
-  if(ControlHandlerD.getRawAxis(2) > 0.5) {AmpArm.set(0.5);}
+   /* if(ControlHandlerD.getRawAxis(2) > 0.5) {AmpArm.set(0.5);}
   else if(ControlHandlerD.getRawAxis(3) > 0.5){AmpArm.set(-0.5);}
-    else{AmpArm.set(0);}
+    else{AmpArm.set(0);}*/
 
 
     //Speed control Commands
